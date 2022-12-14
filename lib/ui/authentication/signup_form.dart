@@ -160,7 +160,6 @@ class _SignUpFormState extends State<SignUpForm> {
               });
         }
       }
-      //TODO: IMPLEMENT SIGNUP LOGIC
     }
 
     return Form(
