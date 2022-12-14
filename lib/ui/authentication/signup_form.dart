@@ -174,7 +174,7 @@ class _SignUpFormState extends State<SignUpForm> {
             controller: _phoneNumberTextController,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return Strings.auth.phoneNumberEmptyError;
+                return Strings.auth.usernameEmptyError;
               } else if (value.length > 9) {
                 return Strings.auth.phoneNumberTooLongError;
               }
