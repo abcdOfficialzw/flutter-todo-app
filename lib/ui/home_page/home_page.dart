@@ -72,7 +72,6 @@ class HomePage extends StatelessWidget {
                         title: "Done",
                         trailing: Icon(Icons.arrow_forward_ios),
                       ),
-                      Sized
                     ],
                   ),
                 )
