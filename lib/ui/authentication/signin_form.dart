@@ -7,6 +7,7 @@ import 'package:todo/res/common/textfields/outlined_textformfield.dart';
 import 'package:todo/res/values/dimensions.dart';
 import 'package:todo/res/values/strings.dart';
 import 'package:todo/services/networking_service.dart';
+import 'package:todo/ui/home_page/home_page.dart';
 
 /// Contains the TextFields used to validate information entered into the sign-in form.
 class SignInForm extends StatefulWidget {
@@ -80,9 +81,8 @@ class _SignInFormState extends State<SignInForm> {
                   actions: [
                     TextButton(
                       onPressed: () {
-                        Navigator.of(context).pop();
-                        // Close the dialog
-                        //TODO: NAVIGATE TO HOME PAGE
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const HomePage()));
                       },
                       child: Text(Strings.buttonLabels.ok),
                     ),
