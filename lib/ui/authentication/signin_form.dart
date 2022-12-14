@@ -128,12 +128,9 @@ class _SignInFormState extends State<SignInForm> {
             textInputAction: TextInputAction.next,
             controller: _phoneNumberFieldTextController,
             validator: (value) {
-              if (value == null || value.isEmpty) {
-                return Strings.auth.phoneNumberEmptyError;
-              } else if (value.length > 9) {
-                return Strings.auth.phoneNumberTooLongError;
+              if (value == '') {
+                return Strings.auth.usernameEmptyError;
               }
-              return null;
             },
             onFieldSubmitted: (value) {
               _passwordFieldFocusNode.requestFocus();

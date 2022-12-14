@@ -69,7 +69,8 @@ class Auth {
 
   // Auth error labels
   final passwordEmptyError = 'Please provide a password';
-  final phoneNumberEmptyError = 'Please provide your phone number';
+  final usernameEmptyError = 'Please provide your username';
+
   final firstNameEmptyError = 'Please provide your first name';
   final surnameEmptyError = 'Please provide your surname';
   final confirmPasswordEmptyError = 'Please confirm your password';
