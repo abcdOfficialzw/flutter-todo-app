@@ -58,15 +58,16 @@ class _SignInFormState extends State<SignInForm> {
   Widget build(BuildContext context) {
     // Triggered when the form is submitted.
     // Use textfield controllers in this function.
-    void onFormSubmit() {
+    void onFormSubmit() async {
       if (_formKey.currentState!.validate()) {
         // Add a zero to the beginning of the phone number if it doesn't start with a zero.
         String username = _phoneNumberFieldTextController.text;
         String password = _passwordFieldTextController.text;
 
-        var networking_response =
-            json.decode(NetworkingService.signin(username, password));
-        if (networking_response["status"] == "200") {
+        Map<String, dynamic> response =
+            await NetworkingService.signin(username, password);
+        print("res: $response");
+        if (response["status"] == 200) {
           showDialog(
               context: context,
               barrierDismissible: false,
@@ -77,7 +78,7 @@ class _SignInFormState extends State<SignInForm> {
                     textAlign: TextAlign.center,
                   ),
                   content: Text(
-                    networking_response["response"],
+                    response["response"],
                     textAlign: TextAlign.center,
                   ),
                   actions: [
@@ -102,7 +103,7 @@ class _SignInFormState extends State<SignInForm> {
                     textAlign: TextAlign.center,
                   ),
                   content: Text(
-                    networking_response["response"],
+                    response["response"],
                     textAlign: TextAlign.center,
                   ),
                   actions: [
