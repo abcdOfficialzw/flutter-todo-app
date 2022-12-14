@@ -8,16 +8,7 @@ import 'package:todo/res/common/textfields/checkbox_formfield.dart';
 import 'package:todo/res/common/textfields/outlined_textformfield.dart';
 import 'package:todo/res/values/dimensions.dart';
 import 'package:todo/res/values/strings.dart';
-<<<<<<< HEAD
-<<<<<<< HEAD
-import 'package:todo/ui/theme/color_scheme.dart';
-=======
 import 'package:todo/services/networking_service.dart';
-import 'package:todo/ui/authentication/theme/color_scheme.dart';
->>>>>>> signup
-=======
-import 'package:todo/ui/theme/color_scheme.dart';
->>>>>>> c9f0eb51180b998100bb905b01e57db79b8ef93b
 
 /// Contains the TextFields used to validate information entered into the sign-up form.
 class SignUpForm extends StatefulWidget {
@@ -179,7 +170,7 @@ class _SignUpFormState extends State<SignUpForm> {
           // username field
           OutlinedTextFormField(
             labelText: Strings.auth.usernameLabel,
-            keyboardType: TextInputType.phone,
+            keyboardType: TextInputType.text,
             textInputAction: TextInputAction.next,
             controller: _phoneNumberTextController,
             validator: (value) {

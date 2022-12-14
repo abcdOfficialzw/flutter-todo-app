@@ -124,16 +124,13 @@ class _SignInFormState extends State<SignInForm> {
         children: [
           OutlinedTextFormField(
             labelText: Strings.auth.usernameLabel,
-            keyboardType: TextInputType.phone,
+            keyboardType: TextInputType.text,
             textInputAction: TextInputAction.next,
             controller: _phoneNumberFieldTextController,
             validator: (value) {
-              if (value == null || value.isEmpty) {
-                return Strings.auth.phoneNumberEmptyError;
-              } else if (value.length > 9) {
-                return Strings.auth.phoneNumberTooLongError;
+              if (value == '') {
+                return 'Enter your username';
               }
-              return null;
             },
             onFieldSubmitted: (value) {
               _passwordFieldFocusNode.requestFocus();
