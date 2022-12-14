@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo/landing_page.dart';
-import 'package:todo/ui/authentication/theme/color_scheme.dart';
-import 'package:todo/ui/authentication/theme/type.dart';
+import 'package:todo/ui/theme/color_scheme.dart';
+import 'package:todo/ui/theme/type.dart';
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 
 void main() {

@@ -8,7 +8,7 @@ import 'package:todo/res/common/textfields/checkbox_formfield.dart';
 import 'package:todo/res/common/textfields/outlined_textformfield.dart';
 import 'package:todo/res/values/dimensions.dart';
 import 'package:todo/res/values/strings.dart';
-import 'package:todo/ui/authentication/theme/color_scheme.dart';
+import 'package:todo/ui/theme/color_scheme.dart';
 
 /// Contains the TextFields used to validate information entered into the sign-up form.
 class SignUpForm extends StatefulWidget {
