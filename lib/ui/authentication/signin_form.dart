@@ -20,7 +20,6 @@ class _SignInFormState extends State<SignInForm> {
   /// A global key that uniquely identifies the Form widget
   /// and allows validation of the form.
   final _formKey = GlobalKey<FormState>();
-  Country? _selectedCountry;
 
   // Form field text controllers.
   final TextEditingController _passwordFieldTextController =
@@ -40,9 +39,6 @@ class _SignInFormState extends State<SignInForm> {
 
   void initCountry() async {
     final country = await getDefaultCountry(context);
-    setState(() {
-      _selectedCountry = country;
-    });
   }
 
   @override
@@ -103,8 +99,8 @@ class _SignInFormState extends State<SignInForm> {
                     Strings.generalErrorTitle,
                     textAlign: TextAlign.center,
                   ),
-                  content: Text(
-                    response["response"],
+                  content: const Text(
+                    'Something went wrong while signing in, please try again',
                     textAlign: TextAlign.center,
                   ),
                   actions: [
@@ -201,19 +197,7 @@ class _SignInFormState extends State<SignInForm> {
       ),
     );
   }
-
-  void _onPressedShowBottomSheet() async {
-    final country = await showCountryPickerSheet(
-      context,
-    );
-    if (country != null) {
-      setState(() {
-        _selectedCountry = country;
-      });
-    }
-  }
 }
-
 
 /**    SIGN IN FAILED
  * 
