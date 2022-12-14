@@ -35,6 +35,7 @@ class Strings {
 
   // Error labels
   static const generalErrorTitle = 'Oops, something went wrong!';
+  static const generalSuccessTitle = 'Successfull';
 }
 
 // Strings for all authentication screens.

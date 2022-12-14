@@ -74,16 +74,17 @@ class _SignInFormState extends State<SignInForm> {
               builder: (context) {
                 return AlertDialog(
                   title: const Text(
-                    Strings.generalErrorTitle,
+                    Strings.generalSuccessTitle,
                     textAlign: TextAlign.center,
                   ),
-                  content: Text(
-                    response["response"],
+                  content: const Text(
+                    'Your sign in was successful, you can proceed to use the app',
                     textAlign: TextAlign.center,
                   ),
                   actions: [
                     TextButton(
                       onPressed: () {
+                        Navigator.of(context).pop();
                         // Close the dialog
                         //TODO: NAVIGATE TO HOME PAGE
                       },

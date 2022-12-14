@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
+import 'package:todo/constants/app_urls.dart';
 
 class NetworkingService {
   static Future<Map<String, dynamic>> signin(
@@ -8,11 +9,12 @@ class NetworkingService {
     Map<String, dynamic> data = {};
     var headers = {'Content-Type': 'application/json'};
     var request = http.Request(
-        'POST', Uri.parse('http://192.168.10.45:8084/api/auth/signin'));
+        'POST', Uri.parse('${AppUrls.baseAuthUrl}${AppUrls.signInEndpoint}'));
     request.body = json.encode({"username": username, "password": password});
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
+
     data["status"] = response.statusCode;
     data["response"] = response.reasonPhrase;
     data["content"] = await response.stream.bytesToString();
