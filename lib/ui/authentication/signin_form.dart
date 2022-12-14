@@ -124,7 +124,7 @@ class _SignInFormState extends State<SignInForm> {
         children: [
           OutlinedTextFormField(
             labelText: Strings.auth.usernameLabel,
-            keyboardType: TextInputType.phone,
+            keyboardType: TextInputType.text,
             textInputAction: TextInputAction.next,
             controller: _phoneNumberFieldTextController,
             validator: (value) {
