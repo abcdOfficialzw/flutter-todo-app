@@ -8,7 +8,12 @@ import 'package:todo/res/common/textfields/checkbox_formfield.dart';
 import 'package:todo/res/common/textfields/outlined_textformfield.dart';
 import 'package:todo/res/values/dimensions.dart';
 import 'package:todo/res/values/strings.dart';
+<<<<<<< HEAD
 import 'package:todo/ui/theme/color_scheme.dart';
+=======
+import 'package:todo/services/networking_service.dart';
+import 'package:todo/ui/authentication/theme/color_scheme.dart';
+>>>>>>> signup
 
 /// Contains the TextFields used to validate information entered into the sign-up form.
 class SignUpForm extends StatefulWidget {
@@ -95,10 +100,72 @@ class _SignUpFormState extends State<SignUpForm> {
   Widget build(BuildContext context) {
     // Triggered when the form is submitted.
     // Use textfield controllers in this function.
-    void onFormSubmit() {
+    void onFormSubmit() async {
       if (_formKey.currentState!.validate()) {
-        //TODO: IMPLEMENT SIGNUP LOGIC
+        String username = _phoneNumberTextController.text;
+        String firstname = _firstNameTextController.text;
+        String lastname = _surnameTextController.text;
+        String email = _emailTextController.text;
+        String password = _passwordTextController.text;
+        String confirmPassword = _confirmPasswordTextController.text;
+
+        Map<String, dynamic> response = await NetworkingService.signup(
+            username, firstname, lastname, email, password);
+        print("res: $response");
+        if (response["status"] == 200) {
+          showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text(
+                    Strings.generalSuccessTitle,
+                    textAlign: TextAlign.center,
+                  ),
+                  content: const Text(
+                    'Your sign up was successful, you can proceed to log in',
+                    textAlign: TextAlign.center,
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        // Close the dialog
+                        //TODO: NAVIGATE TO HOME PAGE
+                      },
+                      child: Text(Strings.buttonLabels.ok),
+                    ),
+                  ],
+                );
+              });
+        } else {
+          showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text(
+                    Strings.generalErrorTitle,
+                    textAlign: TextAlign.center,
+                  ),
+                  content: Text(
+                    response["response"],
+                    textAlign: TextAlign.center,
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        // Close the dialog
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(Strings.buttonLabels.retry),
+                    ),
+                  ],
+                );
+              });
+        }
       }
+      //TODO: IMPLEMENT SIGNUP LOGIC
     }
 
     return Form(
@@ -295,6 +362,7 @@ class _SignUpFormState extends State<SignUpForm> {
     }
   }
 }
+
 /**
  * SIGN UP FAILED
  * ScaffoldMessenger.of(context).showSnackBar(
