@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:country_calling_code_picker/picker.dart';
 import 'package:todo/res/common/buttons.dart/filled_button.dart';
 import 'package:todo/res/common/textfields/outlined_textformfield.dart';
 import 'package:todo/res/values/dimensions.dart';
 import 'package:todo/res/values/strings.dart';
+import 'package:todo/services/networking_service.dart';
 
 /// Contains the TextFields used to validate information entered into the sign-in form.
 class SignInForm extends StatefulWidget {
@@ -58,12 +61,62 @@ class _SignInFormState extends State<SignInForm> {
     void onFormSubmit() {
       if (_formKey.currentState!.validate()) {
         // Add a zero to the beginning of the phone number if it doesn't start with a zero.
-        var phoneNumber = _phoneNumberFieldTextController.text;
-        if (phoneNumber.characters.first != '0') {
-          phoneNumber = '0$phoneNumber';
-        }
+        String username = _phoneNumberFieldTextController.text;
+        String password = _passwordFieldTextController.text;
 
-        //TODO: IMPLEMENT SIGNIN LOGIC
+        var networking_response =
+            json.decode(NetworkingService.signin(username, password));
+        if (networking_response["status"] == "200") {
+          showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text(
+                    Strings.generalErrorTitle,
+                    textAlign: TextAlign.center,
+                  ),
+                  content: Text(
+                    networking_response["response"],
+                    textAlign: TextAlign.center,
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        // Close the dialog
+                        //TODO: NAVIGATE TO HOME PAGE
+                      },
+                      child: Text(Strings.buttonLabels.ok),
+                    ),
+                  ],
+                );
+              });
+        } else {
+          showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text(
+                    Strings.generalErrorTitle,
+                    textAlign: TextAlign.center,
+                  ),
+                  content: Text(
+                    networking_response["response"],
+                    textAlign: TextAlign.center,
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        // Close the dialog
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(Strings.buttonLabels.retry),
+                    ),
+                  ],
+                );
+              });
+        }
       }
     }
 
@@ -163,7 +216,7 @@ class _SignInFormState extends State<SignInForm> {
 /**    SIGN IN FAILED
  * 
  *               // Display dialog with error message to the user.
-              showDialog(
+ * showDialog(
                   context: context,
                   barrierDismissible: false,
                   builder: (context) {
@@ -190,5 +243,6 @@ class _SignInFormState extends State<SignInForm> {
                       ],
                     );
                   });
+              
 
  */
