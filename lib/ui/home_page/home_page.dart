@@ -35,7 +35,9 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     // TODO: implement initState
-    getTasks(assigneeId: 10);
+    setState(() {
+      getTasks(assigneeId: 10);
+    });
     Future.delayed(const Duration(seconds: 5));
 
     super.initState();
@@ -44,7 +46,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final scaffoldTopPadding = MediaQuery.of(context).size.height * 0.01;
-    Future.delayed(const Duration(seconds: 10));
+    bool reload = false;
+
     getTasks(assigneeId: 10);
     return SafeArea(
       bottom: true,
@@ -115,29 +118,99 @@ class _HomePageState extends State<HomePage> {
                       const SizedBox(
                         height: 20,
                       ),
-                      Text(
-                        "Pinned Tasks",
-                        style: materialTextTheme().titleMedium,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Pinned Tasks",
+                            style: materialTextTheme().titleMedium,
+                          ),
+                          GestureDetector(
+                            onTap: (() {
+                              setState(() {
+                                getTasks(assigneeId: 10);
+                                reload = true;
+                              });
+                            }),
+                            child: const Text(
+                              "reload",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.purple),
+                            ),
+                          )
+                        ],
                       ),
                       SizedBox(
-                        height: 500,
-                        child: ListView.builder(
-                            itemCount: pinned["totalElements"],
-                            scrollDirection: Axis.vertical,
-                            itemBuilder: (BuildContext context, int index) {
-                              print(
-                                  "totalElements: ${pinned["totalElements"]}");
+                          height: 500,
+                          child: (pinned["totalElements"] != null)
+                              ? ListView.builder(
+                                  itemCount: pinned["totalElements"],
+                                  scrollDirection: Axis.vertical,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    print(
+                                        "totalElements: ${pinned["totalElements"]}");
 
-                              return ListTile(
-                                leading: Icon(Icons.circle),
-                                title: Text(
-                                    pinned["content"][index]["description"]),
-                                subtitle:
-                                    Text(pinned["content"][index]["status"]),
-                                trailing: Icon(Icons.arrow_forward_ios),
-                              );
-                            }),
-                      )
+                                    return Card(
+                                      elevation: 3,
+                                      child: ListTile(
+                                        leading: Icon(Icons.circle,
+                                            color: (pinned["content"][index]
+                                                        ["status"] ==
+                                                    'TO_DO')
+                                                ? Colors.white
+                                                : Colors.amber),
+                                        title: Text(
+                                          pinned["content"][index]
+                                              ["description"],
+                                          style: materialTextTheme().bodyMedium,
+                                        ),
+                                        subtitle: Text(
+                                          pinned["content"][index]["status"],
+                                          style: materialTextTheme().bodySmall,
+                                        ),
+                                        trailing: GestureDetector(
+                                            onTap: (() async {
+                                              var response =
+                                                  await NetworkingService
+                                                      .unPinTask(
+                                                          pinned["content"]
+                                                              [index]["id"]);
+
+                                              print("test response $response");
+                                              if (response == 'success') {
+                                                // ignore: use_build_context_synchronously
+
+                                                setState(() {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                          const SnackBar(
+                                                    content: Text(
+                                                        'your task was unpinned successfully'),
+                                                  ));
+                                                  getTasks(assigneeId: 10);
+                                                  reload = !reload;
+                                                });
+                                              } else {
+                                                // ignore: use_build_context_synchronously
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                        const SnackBar(
+                                                  content: Text(
+                                                      'A problem occurred while unpinning your task'),
+                                                ));
+                                              }
+                                            }),
+                                            child: const Icon(Icons.push_pin)),
+                                      ),
+                                    );
+                                  })
+                              : Container(
+                                  height: 5,
+                                  width: 4,
+                                  child: const Text(
+                                      "Your connection seems to be slow, please reload ...")))
                     ],
                   ),
                 ),

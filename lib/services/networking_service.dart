@@ -78,4 +78,21 @@ class NetworkingService {
 
     return data;
   }
+
+  static Future<String> unPinTask(int taskId) async {
+    var request = http.Request(
+        'PUT',
+        Uri.parse(
+            '${AppUrls.baseTaskUrl}${AppUrls.unpinTask}${taskId.toString()}'));
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print("Unpin >>" + await response.stream.bytesToString());
+      return 'success';
+    } else {
+      print("Unpin >>" + await response.stream.bytesToString());
+      return 'failed';
+    }
+  }
 }
