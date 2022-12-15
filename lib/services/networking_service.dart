@@ -65,7 +65,7 @@ class NetworkingService {
     var request = http.Request(
         'GET',
         Uri.parse(
-            '${AppUrls.baseTaskUrl}${AppUrls.getPinnedTasks}/${assigneeId.toString()}'));
+            '${AppUrls.baseTaskUrl}${AppUrls.getPinTasks}/${assigneeId.toString()}'));
 
     http.StreamedResponse response = await request.send();
 
