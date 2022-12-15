@@ -88,10 +88,48 @@ class NetworkingService {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-      print("Unpin >>" + await response.stream.bytesToString());
       return 'success';
     } else {
-      print("Unpin >>" + await response.stream.bytesToString());
+      return 'failed';
+    }
+  }
+
+  static getTodoTasks({required String assigneeId}) {}
+
+  static Future<String> updateStatus({
+    required int taskId,
+    required String status,
+    required String description,
+    required int assigneeId,
+    required bool pinned,
+  }) async {
+    if (status == 'TO_DO') {
+      status = "IN_PROGRESS";
+    } else if (status == "IN_PROGRESS") {
+      status = "DONE";
+    } else {
+      status = "TO_DO";
+    }
+
+    var headers = {'Content-Type': 'application/json'};
+    var request = http.Request(
+        'PUT', Uri.parse('http://192.168.10.45:8083/v1/tasks/update/1024'));
+    request.body = json.encode({
+      "id": taskId,
+      "status": status,
+      "description": description,
+      "assigneeId": assigneeId.toString(),
+      "pinned": pinned.toString()
+    });
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print("Update task success: " + await response.stream.bytesToString());
+      return 'success';
+    } else {
+      print("Update task fail: " + response.reasonPhrase.toString());
       return 'failed';
     }
   }

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:country_calling_code_picker/picker.dart';
+import 'package:todo/models/user_model.dart';
 import 'package:todo/res/common/buttons.dart/filled_button.dart';
 import 'package:todo/res/common/textfields/outlined_textformfield.dart';
 import 'package:todo/res/values/dimensions.dart';
@@ -65,6 +66,16 @@ class _SignInFormState extends State<SignInForm> {
             await NetworkingService.signin(username, password);
         print("res: $response");
         if (response["status"] == 200) {
+          print("OUR USER DETAILS: " + response["content"]);
+          Map<dynamic, dynamic> userDetails = jsonDecode(response["content"]);
+          User.token = userDetails["token"];
+          User.assigneeId = userDetails["id"];
+          User.firstName = userDetails["firstname"];
+          User.lastName = userDetails["lastname"];
+          User.email = userDetails["email"];
+          User.username = userDetails["username"];
+          User.roles = userDetails["roles"];
+
           showDialog(
               context: context,
               barrierDismissible: false,
@@ -81,6 +92,7 @@ class _SignInFormState extends State<SignInForm> {
                   actions: [
                     TextButton(
                       onPressed: () {
+                        print("pressed");
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => HomePage()));
                       },

@@ -4,13 +4,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:todo/models/user_model.dart';
 import 'package:todo/res/values/dimensions.dart';
 import 'package:todo/services/networking_service.dart';
 import 'package:todo/ui/home_page/widgets/todo_list_tile.dart';
 import 'package:todo/ui/theme/type.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({super.key});
+  HomePage({
+    super.key,
+  });
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -36,19 +39,20 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     setState(() {
-      getTasks(assigneeId: 10);
+      getTasks(assigneeId: User.assigneeId);
     });
     Future.delayed(const Duration(seconds: 5));
 
     super.initState();
   }
 
+  bool reload = false;
+
   @override
   Widget build(BuildContext context) {
     final scaffoldTopPadding = MediaQuery.of(context).size.height * 0.01;
-    bool reload = false;
 
-    getTasks(assigneeId: 10);
+    getTasks(assigneeId: User.assigneeId);
     return SafeArea(
       bottom: true,
       left: true,
@@ -66,7 +70,10 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.grey, child: const Center(child: Text("TN"))),
             ),
           ),
-          title: const Text("Takudzwa Nyanhanga"),
+          title: Text(
+            "${User.firstName} ${User.lastName}",
+            style: materialTextTheme().bodySmall,
+          ),
           actions: [
             IconButton(onPressed: () {}, icon: const Icon(Icons.search))
           ],
@@ -128,7 +135,7 @@ class _HomePageState extends State<HomePage> {
                           GestureDetector(
                             onTap: (() {
                               setState(() {
-                                getTasks(assigneeId: 10);
+                                getTasks(assigneeId: User.assigneeId);
                                 reload = true;
                               });
                             }),
@@ -155,19 +162,57 @@ class _HomePageState extends State<HomePage> {
                                     return Card(
                                       elevation: 3,
                                       child: ListTile(
-                                        leading: Icon(Icons.circle,
-                                            color: (pinned["content"][index]
-                                                        ["status"] ==
-                                                    'TO_DO')
-                                                ? Colors.white
-                                                : Colors.amber),
+                                        leading: GestureDetector(
+                                          onTap: (() async {
+                                            String response =
+                                                await NetworkingService
+                                                    .updateStatus(
+                                              taskId: pinned["content"][index]
+                                                  ["id"],
+                                              status: pinned["content"][index]
+                                                  ["status"],
+                                              description: pinned["content"]
+                                                  [index]["description"],
+                                              assigneeId: pinned["content"]
+                                                  [index]["assigneeId"],
+                                              pinned: pinned["content"][index]
+                                                  ["pinned"],
+                                            );
+
+                                            if (response == 'success') {
+                                              setState(() {
+                                                getTasks(
+                                                    assigneeId:
+                                                        User.assigneeId);
+                                              });
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(const SnackBar(
+                                                content: Text(
+                                                    'your task was updated successfully'),
+                                              ));
+                                            } else {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(const SnackBar(
+                                                content: Text(
+                                                    'Something went wrong, please try again'),
+                                              ));
+                                            }
+                                          }),
+                                          child: Icon(Icons.circle,
+                                              color: (pinned["content"][index]
+                                                          ["status"] ==
+                                                      'TO_DO')
+                                                  ? Colors.white
+                                                  : Colors.amber),
+                                        ),
                                         title: Text(
                                           pinned["content"][index]
                                               ["description"],
                                           style: materialTextTheme().bodyMedium,
                                         ),
+                                        // ignore: prefer_interpolation_to_compose_strings
                                         subtitle: Text(
-                                          pinned["content"][index]["status"],
+                                          "STATUS: ${pinned["content"][index]["status"]}",
                                           style: materialTextTheme().bodySmall,
                                         ),
                                         trailing: GestureDetector(
@@ -189,7 +234,9 @@ class _HomePageState extends State<HomePage> {
                                                     content: Text(
                                                         'your task was unpinned successfully'),
                                                   ));
-                                                  getTasks(assigneeId: 10);
+                                                  getTasks(
+                                                      assigneeId:
+                                                          User.assigneeId);
                                                   reload = !reload;
                                                 });
                                               } else {
