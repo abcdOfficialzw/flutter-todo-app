@@ -82,7 +82,7 @@ class _SignInFormState extends State<SignInForm> {
                     TextButton(
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const HomePage()));
+                            builder: (context) => HomePage()));
                       },
                       child: Text(Strings.buttonLabels.ok),
                     ),

@@ -108,16 +108,13 @@ class _SignUpFormState extends State<SignUpForm> {
           // username field
           OutlinedTextFormField(
             labelText: Strings.auth.usernameLabel,
-            keyboardType: TextInputType.phone,
+            keyboardType: TextInputType.text,
             textInputAction: TextInputAction.next,
             controller: _phoneNumberTextController,
             validator: (value) {
-              if (value == null || value.isEmpty) {
+              if (value == '') {
                 return Strings.auth.usernameEmptyError;
-              } else if (value.length > 9) {
-                return Strings.auth.phoneNumberTooLongError;
               }
-              return null;
             },
             onFieldSubmitted: (value) {
               _emailFocusNode.requestFocus();

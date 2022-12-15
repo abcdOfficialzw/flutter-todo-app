@@ -5,7 +5,9 @@ import 'package:todo/constants/app_urls.dart';
 
 class NetworkingService {
   static Future<Map<String, dynamic>> signin(
-      String username, String password) async {
+    String username,
+    String password,
+  ) async {
     Map<String, dynamic> data = {};
     var headers = {'Content-Type': 'application/json'};
     var request = http.Request(
@@ -28,5 +30,26 @@ class NetworkingService {
 
   static String hashPassword(String password) {
     return md5.convert(utf8.encode(password)).toString();
+  }
+
+  static Future<Map<String, dynamic>> getPinnedTasks(
+      {required int assigneeId}) async {
+    Map<String, dynamic> data = {};
+
+    var request = http.Request(
+        'GET',
+        Uri.parse(
+            '${AppUrls.baseTaskUrl}${AppUrls.getPinnedTasks}/${assigneeId.toString()}'));
+
+    http.StreamedResponse response = await request.send();
+
+    data["status"] = response.statusCode;
+    data["response"] = response.reasonPhrase;
+    data["content"] = await response.stream.bytesToString();
+    data["content"] = json.decode(data["content"]);
+
+    print('=>$data');
+
+    return data;
   }
 }
