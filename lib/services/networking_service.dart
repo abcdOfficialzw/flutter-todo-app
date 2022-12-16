@@ -28,8 +28,12 @@ class NetworkingService {
   }
 //Sign Up
 
-  static Future<Map<String, dynamic>> signup(String firstname, String lastname,
-      String username, String email, String password) async {
+  static Future<Map<String, dynamic>> signup(
+      {required String firstname,
+      required String lastname,
+      required String username,
+      required String email,
+      required String password}) async {
     Map<String, dynamic> data = {};
     var headers = {'Content-Type': 'application/json'};
     var request = http.Request(

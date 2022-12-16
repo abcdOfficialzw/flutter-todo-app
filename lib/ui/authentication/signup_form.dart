@@ -106,7 +106,11 @@ class _SignUpFormState extends State<SignUpForm> {
         String confirmPassword = _confirmPasswordTextController.text;
 
         Map<String, dynamic> response = await NetworkingService.signup(
-            username, firstname, lastname, email, password);
+            firstname: firstname,
+            lastname: lastname,
+            username: username,
+            email: email,
+            password: password);
         print("res: $response");
         print("res status : ${response["status"]}");
         if (response["status"] == 200) {
@@ -147,8 +151,9 @@ class _SignUpFormState extends State<SignUpForm> {
                     textAlign: TextAlign.center,
                   ),
                   content: Text(
-                    response["response"],
+                    response["content"],
                     textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.black),
                   ),
                   actions: [
                     TextButton(
