@@ -96,7 +96,21 @@ class NetworkingService {
     }
   }
 
-  static getStatusTasks({required String assigneeId, required String status}) {}
+  static Future<Map<String, dynamic>> getStatusTasks(
+      {required int assigneeId, required String status}) async {
+    Map<String, dynamic> data = {};
+
+    var request = http.Request('GET',
+        Uri.parse('http://192.168.10.45:8083/v1/tasks/$status/$assigneeId'));
+
+    http.StreamedResponse response = await request.send();
+    data["status"] = response.statusCode;
+    data["response"] = response.reasonPhrase;
+    data["content"] = await response.stream.bytesToString();
+    data["content"] = json.decode(data["content"]);
+
+    return data;
+  }
 
   static Future<String> updateStatus({
     required int taskId,

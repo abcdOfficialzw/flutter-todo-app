@@ -38,7 +38,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     setState(() {
       getTasks(assigneeId: User.assigneeId);
     });
@@ -103,7 +102,7 @@ class _HomePageState extends State<HomePage> {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => const TaskView(
                                     title: 'TO DO',
-                                    taskStatus: 'TO_DO',
+                                    taskStatus: 'todo',
                                   )));
                         },
                         icon: const Icon(
@@ -118,7 +117,7 @@ class _HomePageState extends State<HomePage> {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => const TaskView(
                                     title: 'PROGRESS',
-                                    taskStatus: 'IN_PROGRESS',
+                                    taskStatus: 'inprogress',
                                   )));
                         },
                         icon: const Icon(
@@ -133,7 +132,7 @@ class _HomePageState extends State<HomePage> {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => const TaskView(
                                     title: 'DONE',
-                                    taskStatus: 'DONE',
+                                    taskStatus: 'done',
                                   )));
                         },
                         icon: const Icon(
@@ -232,7 +231,11 @@ class _HomePageState extends State<HomePage> {
                                                           ["status"] ==
                                                       'TO_DO')
                                                   ? Colors.white
-                                                  : Colors.amber),
+                                                  : (pinned["content"][index]
+                                                              ["status"] ==
+                                                          'DONE'
+                                                      ? Colors.green
+                                                      : Colors.amber)),
                                         ),
                                         title: Text(
                                           pinned["content"][index]
