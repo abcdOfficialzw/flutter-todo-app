@@ -81,6 +81,21 @@ class NetworkingService {
     return data;
   }
 
+  static Future<String> pinTask(int taskId) async {
+    var request = http.Request(
+        'PUT', Uri.parse('http://192.168.10.45:8083/v1/tasks/pin/$taskId'));
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+      return 'success';
+    } else {
+      print(response.reasonPhrase);
+      return 'failed';
+    }
+  }
+
   static Future<String> unPinTask(int taskId) async {
     var request = http.Request(
         'PUT',

@@ -30,6 +30,7 @@ class _TaskViewState extends State<TaskView> {
       print("content> ${tasks["content"]["content"]}");
       tasksByStatus = tasks["content"];
       print("STATUS TASKS>>> $tasks");
+
       return tasks;
     } else {
       return {};
@@ -49,7 +50,19 @@ class _TaskViewState extends State<TaskView> {
   @override
   Widget build(BuildContext context) {
     final scaffoldTopPadding = MediaQuery.of(context).size.height * 0.01;
+    void rebuildAllChildren(BuildContext context) {
+      void rebuild(Element el) {
+        el.markNeedsBuild();
+        el.visitChildren(rebuild);
+      }
+
+      (context as Element).visitChildren(rebuild);
+    }
+
     print(reload);
+    if (reload) {
+      rebuildAllChildren(context);
+    }
     return Scaffold(
         appBar: AppBar(
           leading: GestureDetector(
@@ -157,7 +170,7 @@ class _TaskViewState extends State<TaskView> {
                                     trailing: GestureDetector(
                                         onTap: (() async {
                                           var response =
-                                              await NetworkingService.unPinTask(
+                                              await NetworkingService.pinTask(
                                                   tasksByStatus["content"]
                                                       [index]["id"]);
 
@@ -169,7 +182,7 @@ class _TaskViewState extends State<TaskView> {
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(const SnackBar(
                                                 content: Text(
-                                                    'your task was unpinned successfully'),
+                                                    'your task was pinned successfully'),
                                               ));
                                               getTasks();
                                               reload = !reload;
