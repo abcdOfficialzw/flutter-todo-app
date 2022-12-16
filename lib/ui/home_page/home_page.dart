@@ -100,8 +100,11 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       Todo(
                         onTap: () {
-                          //Navigator.of(context).push(MaterialPageRoute(
-                          //    builder: (context) => const TaskView()));
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const TaskView(
+                                    title: 'TO DO',
+                                    taskStatus: 'TO_DO',
+                                  )));
                         },
                         icon: const Icon(
                           Icons.sunny,
@@ -110,21 +113,35 @@ class _HomePageState extends State<HomePage> {
                         title: "Todo",
                         trailing: const Icon(Icons.arrow_forward_ios),
                       ),
-                      const Todo(
-                        icon: Icon(
+                      Todo(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const TaskView(
+                                    title: 'PROGRESS',
+                                    taskStatus: 'IN_PROGRESS',
+                                  )));
+                        },
+                        icon: const Icon(
                           Icons.priority_high_rounded,
                           color: Colors.red,
                         ),
                         title: "In Progress",
-                        trailing: Icon(Icons.arrow_forward_ios),
+                        trailing: const Icon(Icons.arrow_forward_ios),
                       ),
-                      const Todo(
-                        icon: Icon(
+                      Todo(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const TaskView(
+                                    title: 'DONE',
+                                    taskStatus: 'DONE',
+                                  )));
+                        },
+                        icon: const Icon(
                           Icons.done,
                           color: Colors.green,
                         ),
                         title: "Done",
-                        trailing: Icon(Icons.arrow_forward_ios),
+                        trailing: const Icon(Icons.arrow_forward_ios),
                       ),
                       const SizedBox(
                         height: 5,

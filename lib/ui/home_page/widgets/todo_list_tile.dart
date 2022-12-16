@@ -16,10 +16,13 @@ class Todo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: icon,
-      title: Text(title),
-      trailing: GestureDetector(onTap: onTap, child: trailing),
+    return GestureDetector(
+      onTap: onTap,
+      child: ListTile(
+        leading: icon,
+        title: Text(title),
+        trailing: trailing,
+      ),
     );
   }
 }
