@@ -4,11 +4,14 @@ class Todo extends StatelessWidget {
   final Icon icon;
   final String title;
   final Icon trailing;
+  final void Function()? onTap;
+
   const Todo({
     Key? key,
     required this.icon,
     required this.title,
     required this.trailing,
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -16,7 +19,7 @@ class Todo extends StatelessWidget {
     return ListTile(
       leading: icon,
       title: Text(title),
-      trailing: trailing,
+      trailing: GestureDetector(onTap: onTap, child: trailing),
     );
   }
 }

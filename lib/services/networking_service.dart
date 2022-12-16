@@ -113,9 +113,8 @@ class NetworkingService {
 
     var headers = {'Content-Type': 'application/json'};
     var request = http.Request(
-        'PUT', Uri.parse('http://192.168.10.45:8083/v1/tasks/update/1024'));
+        'PUT', Uri.parse('http://192.168.10.45:8083/v1/tasks/update/$taskId'));
     request.body = json.encode({
-      "id": taskId,
       "status": status,
       "description": description,
       "assigneeId": assigneeId.toString(),

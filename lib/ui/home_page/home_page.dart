@@ -7,6 +7,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:todo/models/user_model.dart';
 import 'package:todo/res/values/dimensions.dart';
 import 'package:todo/services/networking_service.dart';
+import 'package:todo/ui/home_page/task_view.dart';
 import 'package:todo/ui/home_page/widgets/todo_list_tile.dart';
 import 'package:todo/ui/theme/type.dart';
 
@@ -66,13 +67,20 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.all(8.0),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(40),
-              child: Container(
-                  color: Colors.grey, child: const Center(child: Text("TN"))),
+              child: Card(
+                  elevation: 10,
+                  child: Center(
+                      child: Text(
+                    User.getProfileLetters(),
+                    style: materialTextTheme()
+                        .bodyLarge!
+                        .copyWith(fontWeight: FontWeight.bold),
+                  ))),
             ),
           ),
           title: Text(
             "${User.firstName} ${User.lastName}",
-            style: materialTextTheme().bodySmall,
+            style: materialTextTheme().bodyMedium,
           ),
           actions: [
             IconButton(onPressed: () {}, icon: const Icon(Icons.search))
@@ -90,13 +98,17 @@ class _HomePageState extends State<HomePage> {
                   height: MediaQuery.of(context).size.height,
                   child: ListView(
                     children: [
-                      const Todo(
-                        icon: Icon(
+                      Todo(
+                        onTap: () {
+                          //Navigator.of(context).push(MaterialPageRoute(
+                          //    builder: (context) => const TaskView()));
+                        },
+                        icon: const Icon(
                           Icons.sunny,
                           color: Colors.amber,
                         ),
                         title: "Todo",
-                        trailing: Icon(Icons.arrow_forward_ios),
+                        trailing: const Icon(Icons.arrow_forward_ios),
                       ),
                       const Todo(
                         icon: Icon(

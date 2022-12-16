@@ -6,4 +6,11 @@ class User {
   static String email = '';
   static String username = '';
   static List<dynamic> roles = [];
+
+  static String getProfileLetters() {
+    List firstLetter = firstName.split('');
+    List secondLetter = lastName.split('');
+    String profileLetters = firstLetter[0] + secondLetter[0];
+    return profileLetters;
+  }
 }
