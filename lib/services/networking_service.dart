@@ -33,17 +33,18 @@ class NetworkingService {
     Map<String, dynamic> data = {};
     var headers = {'Content-Type': 'application/json'};
     var request = http.Request(
-        'POST', Uri.parse('${AppUrls.baseAuthUrl}${AppUrls.signUpEndpoint}'));
+        'POST', Uri.parse('http://192.168.10.45:8084/api/auth/signup'));
     request.body = json.encode({
       "firstname": firstname,
       "lastname": lastname,
       "username": username,
       "email": email,
-      "password": password,
+      "password": password
     });
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
+
     print("REQUEST BODY ${request.body}");
 
     data["status"] = response.statusCode;
@@ -95,7 +96,7 @@ class NetworkingService {
     }
   }
 
-  static getTodoTasks({required String assigneeId}) {}
+  static getStatusTasks({required String assigneeId, required String status}) {}
 
   static Future<String> updateStatus({
     required int taskId,

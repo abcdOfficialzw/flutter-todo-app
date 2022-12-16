@@ -29,8 +29,7 @@ class _SignUpFormState extends State<SignUpForm> {
   bool _agreeToTerms = false;
 
   // Text controllers for user input.
-  final TextEditingController _phoneNumberTextController =
-      TextEditingController();
+  final TextEditingController _usernameTextController = TextEditingController();
   final TextEditingController _firstNameTextController =
       TextEditingController();
   final TextEditingController _surnameTextController = TextEditingController();
@@ -83,7 +82,7 @@ class _SignUpFormState extends State<SignUpForm> {
     _confirmPasswordFocusNode.dispose();
 
     // Dispose of the all textfield resources.
-    _phoneNumberTextController.dispose();
+    _usernameTextController.dispose();
     _firstNameTextController.dispose();
     _surnameTextController.dispose();
     _emailTextController.dispose();
@@ -99,7 +98,7 @@ class _SignUpFormState extends State<SignUpForm> {
     // Use textfield controllers in this function.
     void onFormSubmit() async {
       if (_formKey.currentState!.validate()) {
-        String username = _phoneNumberTextController.text;
+        String username = _usernameTextController.text;
         String firstname = _firstNameTextController.text;
         String lastname = _surnameTextController.text;
         String email = _emailTextController.text;
@@ -109,6 +108,7 @@ class _SignUpFormState extends State<SignUpForm> {
         Map<String, dynamic> response = await NetworkingService.signup(
             username, firstname, lastname, email, password);
         print("res: $response");
+        print("res status : ${response["status"]}");
         if (response["status"] == 200) {
           showDialog(
               context: context,
@@ -176,7 +176,7 @@ class _SignUpFormState extends State<SignUpForm> {
             labelText: Strings.auth.usernameLabel,
             keyboardType: TextInputType.text,
             textInputAction: TextInputAction.next,
-            controller: _phoneNumberTextController,
+            controller: _usernameTextController,
             validator: (value) {
               if (value == '') {
                 return Strings.auth.usernameEmptyError;
