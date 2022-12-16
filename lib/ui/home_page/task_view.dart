@@ -169,34 +169,75 @@ class _TaskViewState extends State<TaskView> {
                                     ),
                                     trailing: GestureDetector(
                                         onTap: (() async {
-                                          var response =
-                                              await NetworkingService.pinTask(
-                                                  tasksByStatus["content"]
-                                                      [index]["id"]);
+                                          if (tasksByStatus["content"][index]
+                                                  ["pinned"] !=
+                                              true) {
+                                            var response =
+                                                await NetworkingService.pinTask(
+                                                    tasksByStatus["content"]
+                                                        [index]["id"]);
 
-                                          print("test response $response");
-                                          if (response == 'success') {
-                                            // ignore: use_build_context_synchronously
+                                            print("test response $response");
+                                            if (response == 'success') {
+                                              // ignore: use_build_context_synchronously
 
-                                            setState(() {
+                                              setState(() {
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                        const SnackBar(
+                                                  content: Text(
+                                                      'your task was pinned successfully'),
+                                                ));
+                                                getTasks();
+                                                reload = !reload;
+                                              });
+                                            } else {
+                                              // ignore: use_build_context_synchronously
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(const SnackBar(
                                                 content: Text(
-                                                    'your task was pinned successfully'),
+                                                    'A problem occurred while unpinning your task'),
                                               ));
-                                              getTasks();
-                                              reload = !reload;
-                                            });
+                                            }
                                           } else {
-                                            // ignore: use_build_context_synchronously
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(const SnackBar(
-                                              content: Text(
-                                                  'A problem occurred while unpinning your task'),
-                                            ));
+                                            var response =
+                                                await NetworkingService
+                                                    .unPinTask(
+                                                        tasksByStatus["content"]
+                                                            [index]["id"]);
+
+                                            print("test response $response");
+                                            if (response == 'success') {
+                                              // ignore: use_build_context_synchronously
+
+                                              setState(() {
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                        const SnackBar(
+                                                  content: Text(
+                                                      'your task was unpinned successfully'),
+                                                ));
+                                                getTasks();
+                                                reload = !reload;
+                                              });
+                                            } else {
+                                              // ignore: use_build_context_synchronously
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(const SnackBar(
+                                                content: Text(
+                                                    'A problem occurred while unpinning your task'),
+                                              ));
+                                            }
                                           }
                                         }),
-                                        child: const Icon(Icons.push_pin)),
+                                        child: Icon(
+                                          Icons.push_pin,
+                                          color: (tasksByStatus["content"]
+                                                      [index]["pinned"] ==
+                                                  true)
+                                              ? Colors.purple
+                                              : Colors.grey,
+                                        )),
                                   ),
                                 );
                               }))),
