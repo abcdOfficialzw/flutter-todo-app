@@ -9,6 +9,8 @@ import 'package:todo/res/common/textfields/outlined_textformfield.dart';
 import 'package:todo/res/values/dimensions.dart';
 import 'package:todo/res/values/strings.dart';
 import 'package:todo/services/networking_service.dart';
+import 'package:todo/ui/authentication/signin_page.dart';
+import 'package:todo/ui/home_page/home_page.dart';
 
 /// Contains the TextFields used to validate information entered into the sign-up form.
 class SignUpForm extends StatefulWidget {
@@ -126,7 +128,8 @@ class _SignUpFormState extends State<SignUpForm> {
                       onPressed: () {
                         Navigator.of(context).pop();
                         // Close the dialog
-                        //TODO: NAVIGATE TO HOME PAGE
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const SignInPage()));
                       },
                       child: Text(Strings.buttonLabels.ok),
                     ),
@@ -151,7 +154,9 @@ class _SignUpFormState extends State<SignUpForm> {
                     TextButton(
                       onPressed: () {
                         // Close the dialog
-                        Navigator.of(context).pop();
+                        setState(() {
+                          Navigator.of(context).pop();
+                        });
                       },
                       child: Text(Strings.buttonLabels.retry),
                     ),

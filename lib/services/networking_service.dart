@@ -44,12 +44,13 @@ class NetworkingService {
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
+    print("REQUEST BODY ${request.body}");
 
     data["status"] = response.statusCode;
     data["response"] = response.reasonPhrase;
     data["content"] = await response.stream.bytesToString();
 
-    print(data);
+    print("RESPONSE DATA: $data");
 
     return data;
   }

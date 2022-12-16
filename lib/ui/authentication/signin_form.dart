@@ -92,6 +92,7 @@ class _SignInFormState extends State<SignInForm> {
                   actions: [
                     TextButton(
                       onPressed: () {
+                        Navigator.of(context).pop();
                         print("pressed");
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => HomePage()));
